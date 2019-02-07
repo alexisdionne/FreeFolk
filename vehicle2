@@ -1,0 +1,42 @@
+import lejos.hardware.ev3.EV3;
+import lejos.hardware.BrickFinder;
+import lejos.hardware.Keys;
+import lejos.hardware.port.AnalogPort;
+import lejos.hardware.port.Port;
+import lejos.hardware.port.SensorPort;
+import lejos.hardware.sensor.NXTLightSensor;
+import lejos.hardware.sensor.SensorMode;
+import lejos.robotics.SampleProvider;
+import lejos.hardware.lcd.TextLCD;
+
+import java.io.*;
+
+import lejos.ev3.tools.LCDDisplay;
+import lejos.hardware.*;
+
+public class Vehicle2 {
+
+	public static void main(String[] args) {
+		// for use of the button
+		EV3 ev3brick = (EV3) BrickFinder.getLocal();
+		Keys buttons = ev3brick.getKeys();
+				
+		// Initialize light sensors (left and right)
+		NXTLightSensor lsR = new NXTLightSensor(SensorPort.S1);
+		NXTLightSensor lsL = new NXTLightSensor(SensorPort.S4);
+
+		lsR.setCurrentMode("Ambient");
+		lsL.setCurrentMode("Ambient");
+		
+		SampleProvider ambientR = lsR.getMode("Ambient");
+		SampleProvider ambientL = lsL.getMode("Ambient");
+		
+		float[] sampleR = new float [ambientR.sampleSize()];
+		float[] sampleL = new float [ambientL.sampleSize()];
+		
+		while(buttons.equals(false)) {
+			ambientR.fetchSample(sampleR, 0);
+			ambientL.fetchSample(sampleL, 0);
+		}
+	}
+}
