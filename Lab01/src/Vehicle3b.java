@@ -22,10 +22,10 @@ import lejos.hardware.*;
 
 
 // Alexis, Jack, and Nic
-// Lab1 - Vehicle2 Fear
+// Lab1 - Vehicle2 Aggression
 
 
-public class Vehicle2a {
+public class Vehicle3b {
 
 	public static void main(String[] args) throws InterruptedException {
 		// for use of the button
@@ -52,8 +52,10 @@ public class Vehicle2a {
 		RegulatedMotor mR = new EV3MediumRegulatedMotor(MotorPort.B);
 		RegulatedMotor mL = new EV3MediumRegulatedMotor(MotorPort.C);
 		
+		mR.forward();
+		mL.forward();
+		
 		while(true) {
-			// read the current light
 			ambientR.fetchSample(sampleR, 0);
 			ambientL.fetchSample(sampleL, 0);
 			
@@ -61,11 +63,22 @@ public class Vehicle2a {
 			LCD.drawString(String.valueOf(sampleL[0]), 9, 4);
 			// drawing text on the LCD screen based on coordinates
 
+			mR.forward();
+			mL.forward();
+
 			// only move if the amount of light is larger than the room light
-			if(sampleR[0] > roomLight+0.1)
-				mR.rotate((int) (360*sampleL[0]));
-			if(sampleL[0] > roomLight+0.1)
-				mL.rotate((int) (360*sampleR[0]));
+			if(sampleR[0] >= .7) {
+				mR.setSpeed(500);
+			}
+			else if(sampleR[0] < .7) {
+				mR.setSpeed((int) (360-(360*sampleR[0])));
+			}
+			if(sampleL[0] >= .7) {
+				mL.setSpeed(500);
+			}
+			else if(sampleL[0] < .7){
+				mL.setSpeed((int) (360-(360*sampleL[0])));
+			}
 		    
 		    // to escape the loop press middle button
 		    if (buttons.readButtons() == buttons.ID_ENTER) {
