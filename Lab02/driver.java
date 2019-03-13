@@ -1,36 +1,20 @@
 import lejos.hardware.ev3.EV3;
-import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.BrickFinder;
 import lejos.hardware.Keys;
-import lejos.hardware.port.AnalogPort;
 import lejos.hardware.port.MotorPort;
-import lejos.hardware.port.Port;
 import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.HiTechnicEOPD;
-import lejos.hardware.sensor.NXTLightSensor;
-import lejos.hardware.sensor.SensorMode;
 import lejos.robotics.RegulatedMotor;
 import lejos.robotics.SampleProvider;
-import lejos.robotics.filter.MeanFilter;
 import lejos.hardware.lcd.TextLCD;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
-import lejos.hardware.motor.EV3MediumRegulatedMotor;
 import lejos.hardware.sensor.NXTUltrasonicSensor;
-import lejos.hardware.*;
-//import lejos
 
 public class driver 
 {
 
 	public static void main(String[] args) throws InterruptedException 
 	{
-		//ALG:
-		/*
-		 * Fetch Sample
-		 * Determine Error
-		 * Determine Time past?
-		 * 
-		 */
 		EV3 ev3brick = (EV3) BrickFinder.getLocal();
 		Keys buttons = ev3brick.getKeys();
 		TextLCD LCD = ev3brick.getTextLCD();
@@ -40,9 +24,7 @@ public class driver
 		HiTechnicEOPD eopd = new HiTechnicEOPD(SensorPort.S4); 
 		
 		SampleProvider eopdSample = eopd.getLongDistanceMode(); 
-		//USS.getMode("Distance");
 		SampleProvider distanceOf = USS.getDistanceMode();
-		
 		
 		RegulatedMotor leftMotor = new EV3LargeRegulatedMotor(MotorPort.D);
 		RegulatedMotor rightMotor = new EV3LargeRegulatedMotor(MotorPort.A);
@@ -54,96 +36,80 @@ public class driver
 		int kp = 50;
 		double error = 0;
 		double differentialError = 0;
-		int wallKP;
-		int i=0;
-		int errorSum = 0;
+		
 		while(true)
 		{ 
 			
-			errorSum+=0;
+			// getting sample data
 			distanceOf.fetchSample(sample, 0);
 			eopdSample.fetchSample(lightSample, 0);
 			actual = sample[0]*kp;
 			error = expected - actual;
 			
-			/*//if(lightSnesor)
-			{
-				//stuff
-			}
-			else
-			{//...*/
-				
+			// avoid wall if light gets reading
+			// got 4th decimal by multiplying by 1000 because those values changed the most
 			if(lightSample[0] * 1000 > 9700)
 			{
-				// yeet
+				// stop and rotate on light sample
 				leftMotor.rotate(400);
 				rightMotor.stop();
 			}
 			
-			else{
-			if(actual > 10)
+			else
 			{
-				rightMotor.setSpeed((int)(kp*actual));
-				leftMotor.setSpeed((int)(kp*(0.25*actual)));
-				rightMotor.forward();
-				leftMotor.forward();
-			}
-			
-			if(error >2)
-			{
-				differentialError = expected - error;
-				rightMotor.setSpeed((int)(kp*error));
-				leftMotor.setSpeed((int)(kp*differentialError));
-				rightMotor.forward();
-				leftMotor.forward();
-			}
-			//error<0
-			else if(error < -2)
-			{
+					
+				// This is the proportional part, speed is set based on the distance away or near the wall
+				if(actual > 10)
+				{
+					rightMotor.setSpeed((int)(kp*actual));
+					leftMotor.setSpeed((int)(kp*(0.25*actual)));
+					rightMotor.forward();
+					leftMotor.forward();
+				}
 				
-				differentialError = expected - Math.abs(error);
-				rightMotor.setSpeed((int)(kp*differentialError));
-				leftMotor.setSpeed((int)(kp*Math.abs(error)));
-				rightMotor.forward();
-				leftMotor.forward();
-			}
-			else if(error>=-2 && error<=2)
-			{
-				rightMotor.setSpeed((int)(kp*expected));
-				leftMotor.setSpeed((int)(kp*expected));
-				rightMotor.forward();
-				leftMotor.forward();
-			}}
-			
-			
-			/*//kPactual = kP*sample[0];
-			//kPError = kPexpected - kPactual;
-			//if(kPError>0.5)
-			{
+				// sort of an integral type part here, as you are in the buffer, adjust the direction with the wheels accordingly
+				// this happens for this whole if else statement
+				if(error >2)
+				{
+					differentialError = expected - error;
+					rightMotor.setSpeed((int)(kp*error));
+					leftMotor.setSpeed((int)(kp*differentialError));
+					rightMotor.forward();
+					leftMotor.forward();
+				}
 				
+				else if(error < -2)
+				{
+					
+					differentialError = expected - Math.abs(error);
+					rightMotor.setSpeed((int)(kp*differentialError));
+					leftMotor.setSpeed((int)(kp*Math.abs(error)));
+					rightMotor.forward();
+					leftMotor.forward();
+				}
+				
+				else if(error>=-2 && error<=2)
+				{
+					rightMotor.setSpeed((int)(kp*expected));
+					leftMotor.setSpeed((int)(kp*expected));
+					rightMotor.forward();
+					leftMotor.forward();
+				}
 			}
-			else //(kPError<0.5)
-			{
-				rightMotor.setSpeed(100);
-				leftMotor.setSpeed(200);
-				rightMotor.forward();
-				leftMotor.forward();
-			}*/
 			
-			/*if(sample[0]*100>10.00)
-				rightMotor.setSpeed((int)(360*sample[0]));//setSpeed(]);
-				leftMotor.set
-			*/
-			//LCD.drawString(String.valueOf(sample[0]), 2, 4);
-			//LCD.drawString(Double.toString(actual), 2, 4);
+			// Here we are printing out the value of the light sensor.
+			// Commented out is the code for printing out the distance from the wall
 			LCD.drawString(String.valueOf(lightSample[0]), 2, 4);
-			//Thread.sleep(2000);
-			//LCD.drawString(String.valueOf(USS.getD), , y);
+			
 			if (buttons.readButtons() == buttons.ID_ENTER)
 			{
 				break;
 			}
 		}
+		rightMotor.close();
+		leftMotor.close();
+		eopd.close();
+		USS.close();
+		
 	}
-
 }
