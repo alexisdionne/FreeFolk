@@ -53,16 +53,15 @@ public class Avoid implements Behavior {
 
 	@Override
 	public void action() {
-		System.out.println("AVOID");
+		System.out.println(sampleDistFront[0]);
 		suppressed = false;
-
-		
 		
 		while(!suppressed)
 		{
-			Thread.yield();
+			//Thread.yield();
 			currDistFront.fetchSample(sampleDistFront, 0);
-			
+
+			System.out.println(sampleDistFront[0]);
 			if(sampleDistFront[0] < 0.22)
 			{
 				pilot.rotate(67);
@@ -79,24 +78,19 @@ public class Avoid implements Behavior {
 		/*// turn left and go around the obstacle
 		while (!suppressed) {
 			Thread.yield();
-
 			currDistFront.fetchSample(sampleDistFront, 0);
 			//currDistSide.fetchSample(sampleDistSide, 0);
-
 			// turn left when obstacle is in front
 			if (sampleDistFront[0] < 0.22) {
 				pilot.rotate(90);
 				pilot.forward();
 				leftTurn = true;
-
 			// after left turn
 			} else {
-
 				if (leftTurn) {
 					// obstacle to the right move forward
 					if (sampleDistSide[0] < 0.30) {
 						pilot.setLinearSpeed(defaultspd);
-
 						// no obstacle to the right travel and turn right
 					} else if (sampleDistSide[0] > 0.30) {
 						pilot.travel(250);
@@ -105,7 +99,6 @@ public class Avoid implements Behavior {
 					}
 				}
 			}
-
 			// after a right turn and nothing is to the right suppress behavior
 			if (sampleDistSide[0] > 0.30 && rightTurn) {
 				suppressed = true;

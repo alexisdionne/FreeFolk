@@ -49,7 +49,7 @@ public class Locate implements Behavior {
 			pilot.stop();
 
 			// beep at beacon
-			Sound.systemSound(true, 1);
+			//Sound.systemSound(true, 1);
 
 			// when the beacon is not in front suppress behavior
 			if ((int) sampleDist[1] > 0) {

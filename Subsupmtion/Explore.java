@@ -22,6 +22,7 @@ public class Explore implements Behavior {
 	Integer[] grid = new Integer[3];
 
 	public Explore(EV3IRSensor irSensor, MovePilot p) {
+		
 		suppressed = false;
 
 		// set sensors
@@ -43,7 +44,7 @@ public class Explore implements Behavior {
 	public boolean takeControl() {
 		// near beacon
 		currDist.fetchSample(sampleDist, 0);
-		return ((int) sampleDist[1] <= 30 && (int) sampleDist[1] > 0);
+		return ((int) sampleDist[0] <= 30 && (int) sampleDist[0] > 0);
 	}
 
 	@Override
@@ -52,73 +53,47 @@ public class Explore implements Behavior {
 		suppressed = false;
 		
 		pilot.forward();
-
+		float minimum=100000000;
+		int shortestDistance = 0;
 		// turn left to avoid obstacle
-		while (!suppressed) {
-			Thread.yield();
-
-			currDist.fetchSample(sampleDist, 0);
-
-			// stop closer to the beacon
-			if ((int) sampleDist[1] <= 20) {
-				pilot.stop();
-
-				// check left for beacon distance
-				pilot.rotate(45);
-				pilot.travel(50);
+		while (!suppressed) 
+		{
+			//Thread.yield();
+			
+			//while(currDist.fetchSample(sample, offset);)
+			
+			pilot.rotate(-45);
+			for(int i=0; i<=90; i+=10)
+			{
 				currDist.fetchSample(sampleDist, 0);
-				grid[0] = (int) sampleDist[1];
-				pilot.travel(-50);
-				pilot.rotate(-45);
-
-				// check center for beacon distance
-				pilot.travel(50);
-				currDist.fetchSample(sampleDist, 0);
-				grid[1] = (int) sampleDist[1];
-				pilot.travel(-50);
-
-				// check right for beacon distance
-				pilot.rotate(-45);
-				pilot.travel(50);
-				currDist.fetchSample(sampleDist, 0);
-				grid[2] = (int) sampleDist[1];
-				pilot.travel(-50);
-				pilot.rotate(45);
-
-				// find the shortest distance
-				int min = Collections.min(Arrays.asList(grid));
-				int ind = Arrays.asList(grid).indexOf(min);
-				
-				// go in the direction of the shortest distance
-				switch (ind) {
-					case 0:
-						// move left
-						pilot.rotate(45);
-						pilot.travel(100);
-						pilot.rotate(-45);
-						break;
-					case 1:
-						// move center
-						pilot.travel(100);
-						break;
-					case 2:
-						// move right
-						pilot.rotate(-45);
-						pilot.travel(100);
-						pilot.rotate(45);
-						break;
+				if(sampleDist[0]<=minimum)
+				{
+					minimum = sampleDist[0];
+					shortestDistance = i;
 				}
-
-			// move forward when the beacon is not close enough
-			} else {
-				pilot.setLinearSpeed(defaultspd);
+				pilot.rotate(10);
 			}
-
+			pilot.rotate(-90);
+			pilot.rotate(shortestDistance);
+			currDist.fetchSample(sampleDist,0);
+			System.out.println(sampleDist[0]);
+			pilot.setLinearSpeed(maxspd*0.70);
+			while((int)sampleDist[0] > 11)
+			{
+				currDist.fetchSample(sampleDist,0);
+				if((int)sampleDist[0] < 0) 
+				{
+					break;
+				}
+				pilot.forward();
+			}
+			System.out.println("end of explore");
+			suppressed = true;
 			// when the beacon is not close suppress behavior
-			if ((int) sampleDist[1] > 30 || (int) sampleDist[1] < 0) {
-				suppressed = true;
-				break;
-			}
+			//if ((int) sampleDist[1] > 30 || (int) sampleDist[1] < 0) {
+				//suppressed = true;
+				//break;
+			//}
 		}
 	}
 

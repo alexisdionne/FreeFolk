@@ -1,4 +1,3 @@
-
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.robotics.SampleProvider;
 import lejos.robotics.subsumption.Behavior;
@@ -47,7 +46,7 @@ public class Move implements Behavior {
 		
 		// get max speed and set default speed
 		maxspd = pilot.getMaxLinearSpeed();
-		defaultspd = maxspd * 0.60;
+		defaultspd = maxspd * 0.45;
 	}
 
 	@Override
