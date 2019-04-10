@@ -25,8 +25,8 @@ public class Subby{
 
 		// assign sensors to ports
 		EV3IRSensor irSensor = new EV3IRSensor(portS3);
-		NXTUltrasonicSensor ultraSensorSide = new NXTUltrasonicSensor(portS1);
-		NXTUltrasonicSensor ultraSensorFront = new NXTUltrasonicSensor(portS4);
+		//NXTUltrasonicSensor ultraSensorSide = new NXTUltrasonicSensor(portS1);
+		NXTUltrasonicSensor ultraSensorFront = new NXTUltrasonicSensor(portS1);
 
 		// initialize motors and pilot
 		EV3LargeRegulatedMotor motorA = new EV3LargeRegulatedMotor(portA);
@@ -39,17 +39,18 @@ public class Subby{
 
 		// create behaviors
 		Behavior move = new Move(motorA, motorD, pilot);
-		//Behavior avoid = new Avoid(ultraSensorFront, pilot);
+		Behavior avoid = new Avoid(ultraSensorFront, pilot);
 		Behavior explore = new Explore(irSensor, pilot);
 		Behavior locate = new Locate(irSensor, pilot);
 
 		// create array of behaviors
-		 Behavior [] bArray = {move, explore, locate};
+		 Behavior [] bArray = {move, explore, locate, avoid};
 
 		// send array to arbitrator
 		Arbitrator arby = new Arbitrator(bArray);
 		
 		arby.go();
+
 		if(buttons.readButtons() == buttons.ID_ENTER)
 		{
 			arby.stop();

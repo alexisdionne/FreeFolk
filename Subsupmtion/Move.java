@@ -47,7 +47,7 @@ public class Move implements Behavior {
 		
 		// get max speed and set default speed
 		maxspd = pilot.getMaxLinearSpeed();
-		defaultspd = maxspd * 0.60;
+		defaultspd = maxspd * 0.45;
 	}
 
 	@Override

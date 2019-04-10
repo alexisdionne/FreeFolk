@@ -53,16 +53,15 @@ public class Avoid implements Behavior {
 
 	@Override
 	public void action() {
-		System.out.println("AVOID");
+		System.out.println(sampleDistFront[0]);
 		suppressed = false;
-
-		
 		
 		while(!suppressed)
 		{
-			Thread.yield();
+			//Thread.yield();
 			currDistFront.fetchSample(sampleDistFront, 0);
-			
+
+			System.out.println(sampleDistFront[0]);
 			if(sampleDistFront[0] < 0.22)
 			{
 				pilot.rotate(67);
