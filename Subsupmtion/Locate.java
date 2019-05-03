@@ -7,52 +7,43 @@ import lejos.robotics.subsumption.Behavior;
 public class Locate implements Behavior {
 
 	private boolean suppressed;
-
-	EV3IRSensor ir;
-
+	EV3IRSensor infrared;
 	MovePilot pilot;
-
-	SampleProvider currDist;
-	float[] sampleDist;
+	SampleProvider irReading;
+	float[] sample;
 
 	public Locate(EV3IRSensor irSensor, MovePilot p) {
 		suppressed = false;
-
-		// set sensors
-		ir = irSensor;
+		infrared = irSensor;
 		pilot = p;
-
-		// sample variable for data
-		currDist = ir.getSeekMode();
-		sampleDist = new float[currDist.sampleSize()];
+		irReading = infrared.getSeekMode();
+		sample = new float[irReading.sampleSize()];
 	}
 
 	@Override
-	public boolean takeControl() {
-		// close to beacon
-		currDist.fetchSample(sampleDist, 0);
-		return ((int) sampleDist[1] <= 0);
+	public boolean takeControl() 
+	{
+		irReading.fetchSample(sample, 0);
+		if(((int) sample[0] <= 0))
+			return true;
+		else 
+			return false;
 	}
 
 	@Override
 	public void action() {
-		System.out.println("LOCATE");
 		suppressed = false;
 
-		// turn left to avoid obstacle
 		while (!suppressed) {
 			Thread.yield();
 
-			currDist.fetchSample(sampleDist, 0);
-
-			// stop in front of beacon
+			irReading.fetchSample(sample, 0);
 			pilot.stop();
 
-			// beep at beacon
+			//SOUND BYTE
 			Sound.systemSound(true, 1);
 
-			// when the beacon is not in front suppress behavior
-			if ((int) sampleDist[1] > 0) {
+			if ((int) sample[1] > 0) {
 				suppressed = true;
 				break;
 			}
