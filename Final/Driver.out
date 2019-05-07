@@ -1,0 +1,277 @@
+Hit a button!!position: 1
+sample: Infinity
+X: 0.0
+Y: 0.0
+Error: 0.0
+speedRight:264
+speedLEft:135
+position: 2
+sample: 0.59
+X: 0.0
+Y: 0.0
+2: -0.010000026226043679
+Error: -0.010000026226043679
+speedRight:262
+speedLEft:137
+position: 2
+sample: 0.59
+X: 0.009588566576798054
+Y: 0.7788354222667471
+2: -0.010000026226043679
+Error: -0.010000026226043679
+speedRight:260
+speedLEft:139
+position: 2
+sample: 0.57
+X: 0.06531315116772893
+Y: 2.0039131614702317
+2: -0.03000000715255735
+Error: -0.03000000715255735
+speedRight:254
+speedLEft:145
+position: 2
+sample: 0.59
+X: 0.16588905091891357
+Y: 3.1429647941894654
+2: -0.010000026226043679
+Error: -0.010000026226043679
+speedRight:255
+speedLEft:144
+position: 2
+sample: Infinity
+X: 0.2970386053332031
+Y: 4.178744788626958
+Error: 0.0
+speedRight:255
+speedLEft:144
+position: 1
+sample: 1.54
+X: 0.8830902565399688
+Y: 7.204953425942348
+Error: 0.0
+speedRight:248
+speedLEft:151
+position: 1
+sample: Infinity
+X: 1.102812100685501
+Y: 8.055354505681395
+Error: 0.0
+speedRight:247
+speedLEft:152
+position: 1
+sample: Infinity
+X: 1.3632814765257213
+Y: 8.963350293773967
+Error: 0.0
+speedRight:245
+speedLEft:154
+position: 1
+sample: Infinity
+X: 1.6220023357853914
+Y: 9.78535160430504
+Error: 0.0
+speedRight:243
+speedLEft:156
+position: 1
+sample: Infinity
+X: 1.9100036158835119
+Y: 10.632642152264737
+Error: 0.0
+speedRight:242
+speedLEft:157
+position: 0
+sample: Infinity
+X: 3.0200640183424303
+Y: 13.437083845836888
+Error: 0.0
+speedRight:237
+speedLEft:162
+position: 0
+sample: Infinity
+X: 3.5945647357561894
+Y: 14.686857382278033
+Error: 0.0
+speedRight:235
+speedLEft:164
+position: 0
+sample: Infinity
+X: 4.124534093666743
+Y: 15.755903087416907
+Error: 0.0
+speedRight:234
+speedLEft:165
+position: 0
+sample: Infinity
+X: 4.713667182448886
+Y: 16.869112171523113
+Error: 0.0
+speedRight:232
+speedLEft:167
+position: 0
+sample: Infinity
+X: 5.497477934992602
+Y: 18.25356497870289
+Error: 0.0
+speedRight:231
+speedLEft:168
+position: 1
+sample: Infinity
+X: 7.271272998515208
+Y: 21.073019377382526
+Error: 0.0
+speedRight:228
+speedLEft:171
+position: 1
+sample: Infinity
+X: 7.748109362561657
+Y: 21.77084596677806
+Error: 0.0
+speedRight:227
+speedLEft:172
+position: 1
+sample: Infinity
+X: 8.187094023697918
+Y: 22.394085597883873
+Error: 0.0
+speedRight:227
+speedLEft:172
+position: 1
+sample: Infinity
+X: 8.673190341419136
+Y: 23.065134585182612
+Error: 0.0
+speedRight:226
+speedLEft:173
+position: 1
+sample: Infinity
+X: 9.197169986418102
+Y: 23.770049485608762
+Error: 0.0
+speedRight:226
+speedLEft:173
+position: 2
+sample: 0.76
+X: 11.02568252571383
+Y: 26.084825866229636
+speedRight:224
+speedLEft:175
+position: 2
+sample: 0.75
+X: 11.644069438891151
+Y: 26.820680271485514
+speedRight:224
+speedLEft:175
+position: 2
+sample: 0.75
+X: 12.195747673554687
+Y: 27.460981756992904
+speedRight:224
+speedLEft:175
+position: 2
+sample: 0.75
+X: 12.897888976233414
+Y: 28.255913885758766
+speedRight:223
+speedLEft:176
+position: 2
+sample: 0.74
+X: 13.500414948405636
+Y: 28.91758484844182
+speedRight:223
+speedLEft:176
+position: 1
+sample: Infinity
+X: 15.474773299388296
+Y: 30.9735070130296
+speedRight:223
+speedLEft:176
+position: 1
+sample: Infinity
+X: 15.897683434168314
+Y: 31.394314068460407
+speedRight:223
+speedLEft:176
+position: 1
+sample: Infinity
+X: 16.430784946627124
+Y: 31.91579833467956
+speedRight:223
+speedLEft:176
+position: 1
+sample: Infinity
+X: 16.88469632532302
+Y: 32.35231010496649
+speedRight:223
+speedLEft:176
+position: 1
+sample: Infinity
+X: 17.341901604328527
+Y: 32.78537060669591
+speedRight:223
+speedLEft:176
+position: 0
+sample: 1.23
+X: 19.46947715667135
+Y: 34.707109250098924
+speedRight:224
+speedLEft:175
+position: 0
+sample: 1.22
+X: 20.098382039662823
+Y: 35.246622940014454
+speedRight:225
+speedLEft:174
+position: 0
+sample: 1.22
+X: 20.68257750875472
+Y: 35.736368613181995
+speedRight:226
+speedLEft:173
+position: 0
+sample: 1.2099999
+X: 21.207792211886183
+Y: 36.16743347735776
+speedRight:227
+speedLEft:172
+position: 0
+sample: 1.2099999
+X: 21.73706541994792
+Y: 36.59350538765036
+speedRight:228
+speedLEft:171
+position: 1
+sample: 0.7
+X: 24.073303554891773
+Y: 38.367242259467936
+speedRight:235
+speedLEft:164
+position: 1
+sample: 0.7
+X: 24.612805195264368
+Y: 38.75241710164694
+speedRight:238
+speedLEft:161
+position: 1
+sample: Infinity
+X: 25.211821899476284
+Y: 39.16820457101084
+speedRight:242
+speedLEft:157
+position: 1
+sample: Infinity
+X: 26.066835269836442
+Y: 39.73799639293576
+speedRight:250
+speedLEft:149
+position: 1
+sample: 0.68
+X: 26.611027754155717
+Y: 40.08667930565379
+speedRight:258
+speedLEft:141
+position: 2
+sample: 0.63
+X: 29.2606615139252
+Y: 41.595852478948046
+speedRight:360
+speedLEft:39

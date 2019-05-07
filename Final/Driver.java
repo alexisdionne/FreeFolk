@@ -15,8 +15,8 @@ import lejos.hardware.sensor.NXTUltrasonicSensor;
 public class Driver{
 	
 	//					  y, x
-	static int[] goal = {60, 30};
-	static float[] obstacle_data = new float[5];
+	static int[] goal = {40, 30};
+	static float[] obstacle_data = new float[3];
 	int dataCounter = 0;
 	
 	// initialize ports
@@ -41,6 +41,7 @@ public class Driver{
 
 	static int counter = 0;
 	static int position = 0;
+	static boolean reverse = false;
 	
 	static int currentRightTacho, currentLeftTacho;
 	static int prevRightTacho = 0, prevLeftTacho = 0;
@@ -61,14 +62,25 @@ public class Driver{
 		deltaS = 0;
 		LCD.clearDisplay();
 		
+		for(int x = 0; x < 3; x++) {
+			// get data consistently for freshest readings
+			distSensor.fetchSample(sampleDist, 0);
+			obstacle_data[x] = sampleDist[0];
+			if(x<2) {
+				motorB.rotate(45);
+			}
+		}
+		motorB.rotate(-90);
+		Delay.msDelay(500);
+		
 		while (count < 1) {
 			LCD.drawString("goal x:"+goal[1], 0, 6);
 			LCD.drawString("goal y:"+goal[0], 0, 7);
 			
-			if(        Math.abs(x) >= (Math.abs(goal[0] - 2)) 
-					&& Math.abs(x) <= (Math.abs(goal[0] + 2)) 
-					&& Math.abs(y) >= (Math.abs(goal[1] - 2)) 
-					&& Math.abs(y) <= (Math.abs(goal[1] + 2))) {
+			if(        Math.abs(x) >= (Math.abs(goal[0] - 4)) 
+					&& Math.abs(x) <= (Math.abs(goal[0] + 4)) 
+					&& Math.abs(y) >= (Math.abs(goal[1] - 4)) 
+					&& Math.abs(y) <= (Math.abs(goal[1] + 4))) {
 				motorRight.stop();
 				motorLeft.stop();
 				Sound.beepSequenceUp();
@@ -89,23 +101,35 @@ public class Driver{
 		double Sr = 0, Sl = 0;
 		double goalTheta = 0;
 		double kp = 100;
-		double ke = 100;
+		double ke = 200;
 		double avoidError = 0;
-			
-		if(counter % 10  == 0) {
-			// gather fresh data
-			distSensor.fetchSample(sampleDist, 0);
-			obstacle_data[position] = sampleDist[0];
-			
-			if(position == 4) {
-				motorB.rotate(-180);
-				position = 0;
+		
+		// get data consistently for freshest readings
+		distSensor.fetchSample(sampleDist, 0);
+		obstacle_data[position] = sampleDist[0];
+		System.out.println("position: "+position);
+		System.out.println("sample: "+sampleDist[0]);
+		if(position == 2) {
+			reverse = true;
+			motorB.rotate(-45);
+			position--;
+		}
+		else if (position == 0){
+			reverse = false;
+			motorB.rotate(45);
+			position++;
+		}
+		else {
+			if(reverse) {
+				motorB.rotate(-45);
+				position--;
 			}
 			else {
 				motorB.rotate(45);
 				position++;
 			}
 		}
+		
 		// get goal direction
 		// find distances traveled by wheels since last math
 		Sr = (rightTacho - prevRightTacho)*wheelDistance;//maybe get tacho count
@@ -125,6 +149,8 @@ public class Driver{
 		
 		LCD.drawString("X: "+y, 0, 3);
 		LCD.drawString("Y: "+x, 0, 4);
+		System.out.println("X: "+y);
+		System.out.println("Y: "+x);
 		
 		goalTheta = Math.atan2(goal[1] - y, goal[0] - x);
 
@@ -134,13 +160,14 @@ public class Driver{
 			LCD.drawString("          ", 0, 5);
 		}
 		else {
+			//avoidError = 0;
 			avoidError = avoid();
 			LCD.drawString("AVOID: "+avoidError, 0, 5);
 		}
 		
 		int currRight = (int) (rightSpeed + (kp*error+ke*avoidError));
 		int currLeft = (int) (leftSpeed - (kp*error+ke*avoidError));
-		
+		System.out.println("speedRight:"+currRight+"\nspeedLEft:"+currLeft);
 		motorRight.setSpeed(currRight);
 		motorLeft.setSpeed(currLeft);
 		
@@ -163,22 +190,27 @@ public class Driver{
 	
 	public static double avoid() {
 		double avoidError = 0;
-		if(obstacle_data[4] < .85) {
-			avoidError += (obstacle_data[0] - .85);
+		/*if(obstacle_data[4] < .45 && obstacle_data[4] != 0) {
+			avoidError += (obstacle_data[4] - .45);
+			System.out.println("4: "+avoidError);
+		}*/
+		if(obstacle_data[2] < .60 && obstacle_data[2] != 0) {
+			avoidError += (obstacle_data[2] - .60);
+			System.out.println("2: "+avoidError);
 		}
-		if(obstacle_data[3] < .50) {
-			avoidError += (obstacle_data[1] - .50);
+		if(obstacle_data[1] < .80 && obstacle_data[1] != 0) {
+			avoidError += (1 - obstacle_data[1]);
+			System.out.println("1: "+avoidError);
 		}
-		if(obstacle_data[2] < .20) {
-			avoidError += (1 - obstacle_data[2]);
+		if(obstacle_data[0] < .60 && obstacle_data[0] != 0) {
+			avoidError += (.60 - obstacle_data[0]);
+			System.out.println("0: "+avoidError);
 		}
-		if(obstacle_data[1] < .50) {
-			avoidError += (.50 - obstacle_data[3]);
-		}
-		if(obstacle_data[0] < .85) {
-			avoidError += (.85 - obstacle_data[4]);
-		}
-		
+		/*if(obstacle_data[0] < .45 && obstacle_data[0] != 0) {
+			avoidError += (.45 - obstacle_data[0]);
+			System.out.println("0: "+avoidError);
+		}*/
+		System.out.println("Error: "+avoidError);
 		return avoidError;
 	}
 }
